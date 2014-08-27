@@ -1,0 +1,16 @@
+{
+    "name"          : "solfegejs-example-image-manipulation",
+    "description"   : "Command Line Interface to manipulate images",
+    "version"       : "0.1.0",
+    "author"        : "neolao <contact@neolao.com>",
+    "repository"    : "https://github.com/neolao/solfege-example-image-manipulation.git",
+    "engines"       : 
+    {
+        "node": ">= 0.11.11"
+    },
+    "dependencies"  : 
+    {
+        "solfegejs"     : "1.3.*",
+        "solfegejs-cli" : "1.0.*"
+    }
+}
