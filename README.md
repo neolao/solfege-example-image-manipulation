@@ -20,4 +20,6 @@ Display the available commands
 Examples
 --------
 
-    node --harmony console.js imageManipulation:identify /path/to/my-image.jpg
+    node --harmony console.js image:identify /path/to/my-image.jpg
+    node --harmony console.js image:rotateClockwise /path/to/my-image.jpg
+    node --harmony console.js image:rotateCounterClockwise /path/to/my-image.jpg
