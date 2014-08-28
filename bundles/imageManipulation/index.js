@@ -27,6 +27,14 @@ proto.configuration;
  */
 proto.imageMagickIdentifyAvailable;
 
+/**
+ * Indicates that the command "convert" of ImageMagick is available
+ *
+ * @private
+ * @member  {Boolean} solfege.example.imageManipulation.Imageanipulation.prototype.imageMagickConvertAvailable
+ */
+proto.imageMagickConvertAvailable;
+
 
 /**
  * Get the configuration
@@ -60,8 +68,47 @@ proto.identify = function*(imagePath)
 
 
 /**
+ * Rotate an image 90° clockwise
+ *
+ * @param   {String} imagePath - The image path
+ */
+proto.rotateClockwise = function*(imagePath)
+{
+    var commandAvailable = yield this.imageMagickConvertCheck();
+    if (!commandAvailable) {
+        console.error('Command "convert" is not available, please install ImageMagick');
+        return;
+    }
+
+    var result = yield this.imageMagickConvert(imagePath, ['-rotate 90']);
+
+    console.log('Done');
+};
+
+
+/**
+ * Rotate an image 90° counter clockwise
+ *
+ * @param   {String} imagePath - The image path
+ */
+proto.rotateCounterClockwise = function*(imagePath)
+{
+    var commandAvailable = yield this.imageMagickConvertCheck();
+    if (!commandAvailable) {
+        console.error('Command "convert" is not available, please install ImageMagick');
+        return;
+    }
+
+    var result = yield this.imageMagickConvert(imagePath, ['-rotate -90']);
+
+    console.log('Done');
+};
+
+
+/**
  * Check if the "identify" command of ImageMagick is available
  *
+ * @private
  * @return  {Boolean} true if the command is available, false otherwise
  */
 proto.imageMagickIdentifyCheck = function()
@@ -71,7 +118,7 @@ proto.imageMagickIdentifyCheck = function()
 
     if (self.imageMagickIdentifyAvailable !== undefined) {
         return function(done) {
-            done(null, true);
+            done(null, self.imageMagickIdentifyAvailable);
         };
     }
 
@@ -80,12 +127,11 @@ proto.imageMagickIdentifyCheck = function()
             if (error || stderr) {
                 // identify not available
                 self.imageMagickIdentifyAvailable = false;
-                done(null, false);
-                return;
+            } else {
+                self.imageMagickIdentifyAvailable = true;
             }
 
-            self.imageMagickIdentifyAvailable = true;
-            done(null, true);
+            done(null, self.imageMagickIdentifyAvailable);
         });
     }
 };
@@ -122,6 +168,75 @@ proto.imageMagickIdentify = function(filePath)
                     done(null, info);
                 }
             }
+        });
+    };
+};
+
+
+/**
+ * Check if the "convert" command of ImageMagick is available
+ *
+ * @private
+ * @return  {Boolean} true if the command is available, false otherwise
+ */
+proto.imageMagickConvertCheck = function()
+{
+    var self = this;
+    var exec = require('child_process').exec;
+
+    if (self.imageMagickConvertAvailable !== undefined) {
+        return function(done) {
+            done(null, self.imageMagickConvertAvailable);
+        };
+    }
+
+    return function(done) {
+        exec("convert", function (error, stdout, stderr) {
+            if (error || stderr) {
+                // convert not available
+                self.imageMagickConvertAvailable = false;
+            } else {
+                self.imageMagickConvertAvailable = true;
+            }
+
+            done(null, self.imageMagickConvertAvailable);
+        });
+    }
+};
+
+
+/**
+ * Execute the "convert" command of ImageMagick
+ *
+ * @private
+ * @param   {String} filePath - The file path
+ * @param   {Array} [parameters] - The parameters
+ * @param   {String} [newFilePath] - The file path of the converted image
+ */
+proto.imageMagickConvert = function(filePath, parameters, newFilePath)
+{
+    // Sanitize arguments
+    // If the newFilePath is not provided, then overwrite the original image
+    if (!parameters) {
+        parameters = [];
+    }
+    if (!newFilePath) {
+        newFilePath = filePath;
+    }
+
+    var exec = require('child_process').exec;
+    var command = 'convert ' + parameters.join(' ') + ' "' + filePath + '" "' + newFilePath + '"';
+
+    return function(done) {
+        exec(command, function(error, stdout, stderr) {
+            if (error) {
+                throw error;
+            }
+            if (stderr) {
+                throw new Error(stderr);
+            }
+
+            done(null, stdout);
         });
     };
 };

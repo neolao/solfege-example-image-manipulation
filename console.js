@@ -9,7 +9,7 @@ application.addBundle('console', new solfegeCli.Console);
 
 // Add the internal bundle
 var ImageManipulation = require('./bundles/imageManipulation');
-application.addBundle('imageManipulation', new ImageManipulation);
+application.addBundle('image', new ImageManipulation);
 
 // Start the application
 application.start();
