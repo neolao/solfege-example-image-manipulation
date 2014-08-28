@@ -3,6 +3,8 @@ SolfegeJS - Example - Image manipulation
 
 Command Line Interface to manipulate images
 
+![Screenshot](./screenshots/001.png?raw=true)
+
 
 Installation
 ------------
