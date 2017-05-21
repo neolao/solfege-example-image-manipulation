@@ -9,19 +9,19 @@ Command Line Interface to manipulate images
 Installation
 ------------
 
-    npm install
+    npm install --global solfegejs-example-image-manipulation
 
 
 
 Display the available commands
 ------------------------------
 
-    node --harmony console.js
+    image-manipulation
 
 
 Examples
 --------
 
-    node --harmony console.js image:identify /path/to/my-image.jpg
-    node --harmony console.js image:rotateClockwise /path/to/my-image.jpg
-    node --harmony console.js image:rotateCounterClockwise /path/to/my-image.jpg
+    image-manipulation identify /path/to/my-image.jpg
+    image-manipulation rotateClockwise /path/to/my-image.jpg
+    image-manipulation rotateCounterClockwise /path/to/my-image.jpg

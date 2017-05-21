@@ -1,15 +1,14 @@
+#!/usr/bin/env node
+
 var solfege = require('solfegejs');
 
 // Initialize the application
-var application = new solfege.kernel.Application(__dirname);
-
-// Add the external bundles
-var solfegeCli = require('solfegejs-cli');
-application.addBundle('console', new solfegeCli.Console);
+var application = solfege.factory();
 
 // Add the internal bundle
-var ImageManipulation = require('./bundles/imageManipulation');
-application.addBundle('image', new ImageManipulation);
+var ImageManipulation = require('./lib/Bundle');
+application.addBundle(new ImageManipulation);
 
 // Start the application
-application.start();
+var parameters = process.argv.slice(2);
+application.start(parameters);

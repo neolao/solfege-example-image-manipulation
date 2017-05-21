@@ -1,0 +1,19 @@
+services:
+    # Display informations about an image
+    image_manipulation_command_identify:
+        class: "Command/IdentifyCommand"
+        tags:
+            - { name: "solfege.console.command" }
+
+    # Rotate an image 90° clockwise
+    image_manipulation_command_rotate_clockwise:
+        class: "Command/RotateClockwiseCommand"
+        tags:
+            - { name: "solfege.console.command" }
+
+    # Rotate an image 90° counter clockwise
+    image_manipulation_command_rotate_counter_clockwise:
+        class: "Command/RotateCounterClockwiseCommand"
+        tags:
+            - { name: "solfege.console.command" }
+
